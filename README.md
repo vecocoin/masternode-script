@@ -28,7 +28,7 @@ This involves downloading and synchronizing the [wallet](https://github.com/veco
 
 As mentioned above, you will need some Veco to create what is called collateral: a certain amount of Veco that will be “frozen” in order for your masternode to keep running.
 
-You will first need to get the amount of Veco for the collateral, as well as a small amount to pay the transactions fees. You may purchase some Veco on exchanges [CREX24](https://crex24.com/exchange/VECO-BTC) or [FINEXBOX](https://www.finexbox.com/market/pair/VECO-BTC.html). You will need:
+You will first need to get the amount of Veco for the collateral, as well as a small amount to pay the transactions fees. You may purchase some Veco on exchanges [XredX]([https://crex24.com/exchange/VECO-BTC](https://www.xredx.org/market/vecodoge)) or [FINEXBOX](https://www.finexbox.com/market/pair/VECO-BTC.html). You will need:
 
 - 10,000 VECO (+1 VECO) for a masternode
 
@@ -136,7 +136,7 @@ sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapf
 
 ### Step 4 – Install masternode binaries and configuration
 
-Get the latest binaries [from github](https://github.com/vecopay/veco/releases). At the time of writing, latest version is **v1.13.4**. You should check on github and adapt the following commands with **latest binaries** and **Ubuntu version** reference.
+Get the latest binaries [from github](https://github.com/vecocoin/veco). At the time of writing, latest version is **v1.13.4**. You should check on github and adapt the following commands with **latest binaries** and **Ubuntu version** reference.
 
 Example for **v1.13.4** and **Ubuntu 18.04** VPS:
 ```bash
