@@ -28,7 +28,7 @@ This involves downloading and synchronizing the [wallet](https://github.com/veco
 
 As mentioned above, you will need some Veco to create what is called collateral: a certain amount of Veco that will be “frozen” in order for your masternode to keep running.
 
-You will first need to get the amount of Veco for the collateral, as well as a small amount to pay the transactions fees. You may purchase some Veco on exchanges [XredX]([https://crex24.com/exchange/VECO-BTC](https://www.xredx.org/market/vecodoge) or [FINEXBOX](https://www.finexbox.com/market/pair/VECO-BTC.html). You will need:
+You will first need to get the amount of Veco for the collateral, as well as a small amount to pay the transactions fees. You may purchase some Veco on exchanges [XredX](https://www.xredx.org/market/vecodoge) or [FINEXBOX](https://www.finexbox.com/market/pair/VECO-BTC.html). You will need:
 
 - 10,000 VECO (+1 VECO) for a masternode
 
