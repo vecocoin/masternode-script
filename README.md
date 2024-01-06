@@ -222,7 +222,7 @@ which should yield the following information:
 
 Here, “watch”-ing lets you see the synchronization (you can exit the watch at any time with **ctrl-c**). The blocks number will go up until your masternode reaches the total number of blocks in the blockchain.
 
-This is the longest part. You can see what number it needs to reach by hovering over the small **V** in the lower right of your control wallet or by checking [Veco Block Explorer](explorer.veco.to).
+This is the longest part. You can see what number it needs to reach by hovering over the small **V** in the lower right of your control wallet or by checking [Veco Block Explorer](explorer.vecocoin.com).
 
 **BEWARE: the blocks number might not start growing for a while. This is because the daemon could be looking for a valid connections or synchronizing headers. As long as you have connections higher than zero you are fine.**
 
