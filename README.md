@@ -1,20 +1,21 @@
-# Veco Masternode Installation Guide
+# Veco DIP3 Masternode Installation Guide
 
-This guide will teach you how to setup a Veco Masternode on a remote server (VPS). You should have at least a basic knowledge of linux. For better clarity, all commands that must be typed shall be displayed as such:
+This guide will teach you how to setup a Veco DIP3 Masternode on a remote server (VPS). You should have at least a basic knowledge of linux. For better clarity, all commands that must be typed shall be displayed as such:
 ```bash
 this is a command
 ```
 Type the command exactly (you may copy&paste it). There will always be some space between commands so that you can easily see commands spanning over several lines. Some commands may also be appended together with **&&** to speed up the process when commands are short or trivial. You may execute these commands as one, or you may type each one separately.
 
-If you need any additional help, feel free to join [our discord](https://discord.com/invite/Z7j9mz6) and ask for help in the _#masternode_ channel.
+If you need any additional help, feel free to join [our discord](https://discord.gg/JRzSRYF7) and ask for help in the _#masternodes_ channel.
 
 **BEWARE scammers trying to impersonate team members! Do not accept help from people directly contacting you. No one from Veco team will contact you and “help” proactively!**
 
 ## What you’ll need
 
-1. **A local computer** – your everyday computer, which will run a control wallet and hold your coins. This computer need not always be online.
+1. **A local computer** – your everyday (typically Windows) computer, which will run a control wallet and hold your coins. This computer need not always be online. 
 
-2. **A remote server** – typically a VPS, with Ubuntu Server 16.04, 18.04 or 20.04 64-bit OS installed with a unique and static IP address (an IP address that does not change), which is always running and connected to the Internet. This VPS should at least have 1Gb of RAM and 10Gb of space storage.
+2. **A remote (or local) server** – typically a VPS, or a server at home. You can choose a 64-bit OS; Ubuntu Server 18.04, 20.04 or 22.04. You need a unique and static IP address (an IP address that does not change), which is always running and connected to the Internet. This server should at least have 1Gb of RAM and 10Gb of space storage.
+(When you want to install multiple masternodes on one machine, you should add 750 Mb of RAM en 2 Gb of space storage to this for every extra masternode.)
 
 3. **A collateral** – an amount in Veco that will be unspendable as long as you wish to keep your node running. For a masternode you’ll need 10,000 VECO. You’ll need some change for transaction fees, so 1 VECO more to cover expenses is good enough.
 
@@ -22,13 +23,14 @@ If you need any additional help, feel free to join [our discord](https://discord
 
 ### Step 1 – Set up a wallet
 
-This involves downloading and synchronizing the [wallet](https://github.com/vecopay/veco/releases). Please use [bootstrap](https://github.com/vecopay/veco/releases/download/v1.13.4/bootstrap.zip) to speed up the process.
+This involves downloading and synchronizing the [wallet](https://github.com/vecocoin/veco/releases/download/v1.14.1/veco-1.14.1-win64-setup.exe). Please use [bootstrap](https://github.com/tedydet/veco/releases/tag/bootstrap) to speed up the process.
 
 ### Step 2 – Create collateral
 
 As mentioned above, you will need some Veco to create what is called collateral: a certain amount of Veco that will be “frozen” in order for your masternode to keep running.
 
-You will first need to get the amount of Veco for the collateral, as well as a small amount to pay the transactions fees. You may purchase some Veco on exchanges [XredX](https://www.xredx.org/market/vecodoge) or [FINEXBOX](https://www.finexbox.com/market/pair/VECO-BTC.html). You will need:
+You will first need to get the amount of Veco for the collateral, as well as a small amount to pay the transactions fees. 
+You may purchase some Veco on exchange [FreiXLite](https://freixlite.com/market/VECO/LTC) . You will need:
 
 - 10,000 VECO (+1 VECO) for a masternode
 
@@ -50,7 +52,8 @@ The first part is the transfer ID, and the last (the digit) is the index.
 
 ### Step 3 – Create private key and BLS key
 
-A private key is used to identify your masternode in your control wallet. You can create this key using the console again and typing the following command:
+A private key was used to identify your masternode in the DIP1 control wallet. The wallet is doing a check for it, so you still need it. 
+You can create this key using the console again and typing the following command:
 ```bash
 masternode genkey
 ```
@@ -64,14 +67,16 @@ The command yields a secret key and a public key. You will need to keep both par
 
 ## Setting up a VPS
 
-The following procedure assumes an installation from scratch. If you have an existing VPS already installed, then some steps might not be needed. **BEWARE: securing your server is still your responsibility!**
+The following procedure assumes an installation from scratch. If you have an existing VPS already installed, then some steps might not be needed. 
+
 
 ### Step 1 – Acquire a VPS from any provider
 
-The cheapest one will do, provided you create a swap file (see below).
-When asked, choose the Ubuntu 16.04, 18.04 (recommened) or 20.04 LTS Linux distribution.
+The cheapest one will do, provided you create a swap file when RAM is not sufficent. (see below).
+We recommend Ubuntu 22.04, but when not available you could choose the Ubuntu  18.04 or 20.04 LTS Linux distribution.
 
-### Step 2 – Log into your VPS and install updates and packages
+### Step 2 – Log into your VPS and install updates and take security measurements
+
 
 In order to access your VPS, you will need a software/SSH client such as [PuTTY](https://www.putty.org/). This tutorial does not cover installation of, know-how to use such software.
 
@@ -86,10 +91,15 @@ Switch to **veco** user
 su veco
 cd ~
 ```
+
 A clean server install will likely need some software updates. Enter the following command which will bring the system up to date (can take a few minutes to complete):
 ```bash
 sudo apt-get update && sudo apt-get upgrade -y
 ```
+**BEWARE: Securing your server is very important and your responsibility!** 
+To secure your VPS, immediately change default passwords, update all software, configure a firewall to allow only necessary ports, use SSH keys instead of passwords for remote access, and consider installing fail2ban to block brute-force attempts. 
+For detailed instructions, you can refer to this comprehensive guide: https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-22-04 1 
+
 Reboot your VPS for changes to take effect:
 ```bash
 sudo reboot
@@ -99,30 +109,12 @@ After rebooting, switch to **veco** user again:
 su veco
 cd ~
 ```
-Install the following packages and libraries (some libraries are not necessary if you don’t compile sources but it’s still a good idea to do it so you got them installed anyways):
-
-#### Ubuntu 16.04 and 18.04
-
-```bash
-sudo add-apt-repository ppa:bitcoin/bitcoin
-```
-You will be asked to confirm installation of the bitcoin library. Simply hit **enter**.
-
-Now install the dependencies:
-```bash
-sudo apt update -y && sudo apt upgrade -y && sudo apt install -y build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils git libdb4.8-dev libdb4.8++-dev curl && sudo apt install -y libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev libzmq3-dev python-virtualenv unzip htop
-```
-
-#### Ubuntu 20.04
-
-Install the dependencies:
-```bash
-sudo apt update -y && sudo apt upgrade -y && sudo apt install -y build-essential libtool autotools-dev automake pkg-config libssl-dev libevent-dev bsdmainutils git libdb-dev libdb++-dev curl && sudo apt install -y libboost-system-dev libboost-filesystem-dev libboost-chrono-dev libboost-program-options-dev libboost-test-dev libboost-thread-dev libzmq3-dev python-virtualenv unzip htop
-```
 
 ### Step 3 – Set up a Swap File (optional)
 
-This will be needed especially if using a low end VPS and you wish to compile the source code. Some providers already install a swap on their VPS. You can check this by doing:
+This will be needed especially if using a low end VPS and you wish to compile the source code. 
+
+Some providers already install a swap on their VPS. You can check this by doing:
 ```bash
 htop
 ```
@@ -136,18 +128,20 @@ sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapf
 
 ### Step 4 – Install masternode binaries and configuration
 
-Get the latest binaries [from github](https://github.com/vecocoin/veco). At the time of writing, latest version is **v1.13.4**. You should check on github and adapt the following commands with **latest binaries** and **Ubuntu version** reference.
+Get the latest binaries [from github](https://github.com/vecocoin/veco). At the time of writing, latest version is **v1.14.1**. 
 
-Example for **v1.13.4** and **Ubuntu 18.04** VPS:
+You should check on github and adapt the following commands with **latest binaries** and **Ubuntu version** reference.
+
+Example for **v1.14.1** and **Ubuntu 22.04 ** VPS:
 ```bash
-wget https://github.com/vecopay/veco/releases/download/v1.13.4/vecocore-1.13.4-x86_64-ubuntu18-gnu.tar.gz
+wget https://github.com/vecocoin/veco/releases/download/v1.14.1/veco-1.14.1-ubuntu_2204_x86.tar.gz
 ```
 ```bash
-tar zxvf vecocore-1.13.4-x86_64-ubuntu18-gnu.tar.gz
+tar zxvf veco-1.14.1-ubuntu_2204_x86.tar.gz
 
-sudo mv vecocore-1.13.4/bin/veco{d,-cli,-tx} /usr/local/bin/
+sudo mv ~/src/veco{d,-cli,-tx} /usr/local/bin/
 
-rm -r vecocore-1.13.4
+rm -r vecocore-1.14.1
 ```
 Before the node can operate as a masternode, a custom configuration file needs to be created. Since we have not loaded the blockchain yet, we will create the necessary directory and configuration file
 ```bash
@@ -155,11 +149,14 @@ mkdir .vecocore && cd .vecocore
 ```
 Get the following values for your configuration file:
 
--   **USER** – an alphanumerical string
--   **PASSWORD** – an alphanumerical string, not the same as user
--   **VPS IP** – the IP of your VPS (looks something like: 192.168.2.1)
+-   **USER** – an alphanumerical string, e.g. "VecoUser"
+-   **PASSWORD** – an alphanumerical string, not the same as user, e.g. "VecoPasswd"
+-   **VPS IP** – the IP of your VPS (looks something like: 11.22.33.44)
 -   **PRIVATE KEY** – the one you created earlier in your control wallet’s Debug Console
 -   **BLS SECRET KEY** – the one you created earlier in your control wallet’s Debug Console
+
+When you want to install multiple masternodes on one machine, use the supplied IPv4 address for the first masternode, and use IPv6 addresse for the next masternodes.
+Look for the information supplied by the provider about IPv6 addresses. With most providers you need to take some extra actions to activate the IPv6 addresses. 
 
 Create _veco.conf_ file
 ```bash
@@ -172,7 +169,7 @@ rpcpassword=PASSWORD
 listen=1
 server=1
 daemon=1
-maxconnections=8
+maxconnections=50
 masternode=1
 externalip=VPS IP
 rpcallowip=127.0.0.1
@@ -185,13 +182,13 @@ Save the file (**ctrl-x**, then type **y** and hit **enter**)
 
 ### Step 5 – Start the daemon
 
-Now that you have everything set up, it’s time to start the daemon. To speed up the synchronization of the blockchain, you may download a booststrap file and put it in the .vecocore directory you created earlier, the one where your veco.conf file was created (this is not mandatory):
+Now that you have everything set up, it’s time to start the daemon. To speed up the synchronization of the blockchain, you may download a booststrap file and put it in the .vecocore directory you created earlier, the one where your veco.conf file was created (this is highly recommende to prevent long delays):
 ```bash
-wget https://github.com/vecopay/veco/releases/download/v1.13.4/bootstrap.zip && unzip bootstrap.zip
+wget https://github.com/tedydet/veco/releases/download/bootstrap/bootstrap_1.14.1.zip && unzip bootstrap_1.14.1.zip
 ```
 And finally launch the masternode daemon:
 ```bash
-vecod
+vecod -daemon
 ```
 Wait about 30 minutes for your masternode to sync completely.
 
@@ -201,28 +198,29 @@ watch veco-cli getinfo
 ```
 which should yield the following information:
 
-{  
-"version": 1130400,  
-"protocolversion": 70211,  
-"walletversion": 61000,  
-"balance": 0.00000000,  
-"privatesend_balance": 0.00000000,  
-"blocks": **total number of blocks**,  
-"timeoffset": 0,  
-"connections": 8,  
-"proxy": "",  
-"difficulty": 0.000471432058882026,  
-"testnet": false,  
-"keypoololdest": 1650834178,  
-"keypoolsize": 999,  
-"paytxfee": 0.00000000,  
-"relayfee": 0.00001000,  
-"errors": ""  
+```
+{
+  "version": 1140100,
+  "protocolversion": 70211,
+  "walletversion": 61000,
+  "balance": 0.00000000,
+  "privatesend_balance": 0.00000000,
+  "blocks": 1406426,
+  "timeoffset": 0,
+  "connections": 8,
+  "proxy": "",
+  "difficulty": 0.00210908149541103,
+  "testnet": false,
+  "keypoololdest": 1746505472,
+  "keypoolsize": 999,
+  "paytxfee": 0.00000000,
+  "relayfee": 0.00001000,
+  "errors": ""
 }
-
+```
 Here, “watch”-ing lets you see the synchronization (you can exit the watch at any time with **ctrl-c**). The blocks number will go up until your masternode reaches the total number of blocks in the blockchain.
 
-This is the longest part. You can see what number it needs to reach by hovering over the small **V** in the lower right of your control wallet or by checking [Veco Block Explorer](explorer.vecocoin.com).
+This is the longest part. You can see what number it needs to reach by hovering over the small **V** in the lower right of your control wallet or by checking [Veco Block Explorer](https://explorer.vecocoin.com).
 
 **BEWARE: the blocks number might not start growing for a while. This is because the daemon could be looking for a valid connections or synchronizing headers. As long as you have connections higher than zero you are fine.**
 
@@ -232,6 +230,7 @@ watch veco-cli mnsync status
 ```
 which should yield the following information:
 
+```
 {  
 "AssetID": **999**,  
 "AssetName": "MASTERNODE_SYNC_FINISHED",  
@@ -243,96 +242,71 @@ which should yield the following information:
 "IsSynced": true,  
 "IsFailed": false  
 }
+```
 
 The masternode is completely synced when AssetID is **999** (it will go through 0, 1, 2, 3, 4 and 999).
 You can exit the watch at any time with **ctrl-c**.
 Once your masternode is synced, you may delete the bootstrap file:
 ```bash
-rm bootstrap.zip
-```
-### Step 6 – Installing sentinel
-
-Sentinel is not strictly needed for payouts, but if you want to monitor your masternode easily from your wallet, you will have to install it.
-
-#### A – Download source code
-
-The following commands will suppose that sentinel is installed in the home directory of veco user.
-```bash
-cd ~ && git clone https://github.com/vecopay/sentinel.git
+rm bootstrap_1.14.1.zip
 ```
 
-#### B – Compile and run code
-
-The following commands will compile the code and create necessary files and folders.
-```bash
-cd sentinel && virtualenv ./venv && ./venv/bin/pip install -r requirements.txt
-```
-
-#### C – Create crontab entry
-
-Sentinel needs to be executed regularly to monitor your masternode accurately. This is done by entering a command in your veco user cron daemon.
-
-To find the path to Sentinel, run the following command:
-```bash
-pwd
-```
-Edit your crontab:
-```bash
-crontab -e
-```
-Add the following line (edit **/path/to/sentinel** with your path):
-```bash
-* * * * * cd /path/to/sentinel && ./venv/bin/python bin/sentinel.py >/dev/null 2>&1
-```
-And save the file (**ctrl-x**, then type **y** and hit **enter**)
-
-### Step 7 – Starting the masternode
+## Registration and starting the masternode
 
 Your masternode is now synchronized and chatting with the network but is not accepted as a masternode because it hasn’t been introduced to the network with your collateral. This is done with the control wallet.
 
-#### A – Activate masternodes tab
+#### Step 1 – Activate masternodes tab
 
 If the masternodes tab is not available (should be available by default) in your control wallet, you need to activate it. Go to Settings > Options, then Wallet tab and check the Show Masternodes Tab box.
 
-#### B – Edit masternode.conf file
 
-This file is used to link your control wallet to your masternode. You can access it by going to Tools > Open Masternode Configuration File. You must add the following line:
+#### Step 2 – Open control wallet
 
-**name** **ip:26919** **private key** **collateral txid** **collateral index**
+At last, we arrive to the final step needed to register the masternode. 
 
-Where:
+1.	Open your Veco control wallet and navigate to your console via Tools -> Debug console
+   
+#### Step 3 -	Generate two new addresses
+*	Enter getnewaddress “label” (example: getnewaddress MN1)
+*	Enter getnewaddress “label” (example: getnewaddress MN1-owner)
+  
+#### Step 4 -	Send collateral amount
+Send exactly 10,000 VECO to the first address and wait until the transaction has 15 confirmations
+   
+#### Step 5 -	NX ID and TX Index	
+Run masternode outputs in the console and note the respective TX-ID and TX-Index for the steps below
 
--   **name** is any name you wish to give your masternode. For example “MN-01”
--   **ip:26919** IP is the static IP address of your VPS. 26919 is the port
--   **private key** is the key you generated with the **masternode genkey** command
--   **collateral txid** is the first part of what you got when typing the **masternode outputs** command
--   **collateral index** is the second part (the digit, almost always “1”) of what you got when typing the **masternode outputs** command
+#### Step 6 -	Prepare Chain registration
+Next you need to prepare the MN to be registered on chain using the template below (ie replace the bold variables with your data):
 
-For example (should be typed as one line):
+#### protx register_prepare collateralHash collateralIndex ipAndPort ownerKeyAddr operatorPubKey votingKeyAddr operatorReward payoutAddress feeSourceAddress
 
-MN-01 192.168.2.1:26919 3XAuT7wG2KKuKAZ8bkfV7ExfJ8e7bWeXKXonsR6cWFpvnbmzk39 efa598dd5df8fdff8777b1bf36066bbda34426a2bba33c702867d67e64070707 1
+-	**collateralHash** = TX-ID of the transaction containing the 1000 VECO
+-	**collateralIndex** = TX-Index of the transaction containing the 1000 VECO
+-	**ipAndPort** = IP and p2p port (IPv4: 5.189.159.94:40000 | IPv6: [2a02:c207:3005:3682::19]:40000)
+-	**ownerKeyAddr** = The second new address generated
+-	**operatorPubKey** = Public Key from BLS keypair
+-	**votingKeyAddr** = The second new address generated
+-	**operatorReward** = 0
+-	**payoutAddress** = Your MN address or a new one you want to receive the rewards
+-	**feeSourceAddress** = An address in your wallet with few VECO for TX fees
 
-Once you have typed this line, save the file and **restart your control wallet**.
+If the command was executed successfully the wallet will respond with 3 strings containing **“tx“, “collateralAddress“, “signMessage“**
 
-#### C – Start masternode
+#### Step 7 -	Sign Message
+Next run **signmessage collateralAddress signMessage** , replacing both variables with the data above (without “”)
+If the command was executed successfully the wallet will respond with 1 string containing the signature
 
-At last, we arrive to the final step needed to complete the installation. **BEWARE: for this final step, your collateral transaction needs at least 15 confirmations!**
+#### Step 8 -	Submit to chain
+Next run **protx register_submit tx signature** to finally submit the masternode to the chain
+You do not need to keep a record of that console output. After a few blocks you should see your new masternode appear in the masternode tab of your controller with status "ENABLED"
 
-Go to the **My Masternodes** tab. You should see your masternode information, and a MISSING status. Click on the **Start MISSING** button. Your masternode will go to PRE_ENABLED status, then ENABLED. Once enabled, all is done.
+Note: There is no more masternode.conf file or similar with DIP 3 masternodes. Everything is done “on-chain” using the commands above. 
 
-Again, don’t forget: your collateral must have 15 confirmations before you can use it to enable a masternode.
-
-You may check the status on your VPS with the following command (as veco user):
+#### Step 9 -	Verification of status
+You can verify your masternode is running successfully on VPS with the following command (as veco user):
 ```bash
 veco-cli masternode status
 ```
-which should yield the following information:
+If the state “READY” is displayed, your masternode is running and you will get your reward on the Next Payment block.
 
-{  
-"outpoint": "**your masternode output**",  
-"service": "**your ip**:26919",  
-"payee": "**your collateral address**",  
-"status": "Masternode successfully started"  
-}
-
-If you see **"status": "Not capable masternode: Masternode not in masternode list"**, please go to **control wallet**, choose your masternode from the **My Masternodes** tab, and click on **Start alias**.
