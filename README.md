@@ -279,7 +279,7 @@ Run masternode outputs in the console and note the respective TX-ID and TX-Index
 #### Step 6 -	Prepare Chain registration
 Next you need to prepare the MN to be registered on chain using the template below (ie replace the bold variables with your data):
 
-#### protx register_prepare collateralHash collateralIndex ipAndPort ownerKeyAddr operatorPubKey votingKeyAddr operatorReward payoutAddress feeSourceAddress
+#### protx register collateralHash collateralIndex ipAndPort ownerKeyAddr operatorPubKey votingKeyAddr operatorReward payoutAddress feeSourceAddress
 
 -	**collateralHash** = TX-ID of the transaction containing the 1000 VECO
 -	**collateralIndex** = TX-Index of the transaction containing the 1000 VECO
@@ -291,19 +291,13 @@ Next you need to prepare the MN to be registered on chain using the template bel
 -	**payoutAddress** = Your MN address or a new one you want to receive the rewards
 -	**feeSourceAddress** = An address in your wallet with few VECO for TX fees
 
-If the command was executed successfully the wallet will respond with 3 strings containing **“tx“, “collateralAddress“, “signMessage“**
-
-#### Step 7 -	Sign Message
-Next run **signmessage collateralAddress signMessage** , replacing both variables with the data above (without “”)
-If the command was executed successfully the wallet will respond with 1 string containing the signature
-
-#### Step 8 -	Submit to chain
-Next run **protx register_submit tx signature** to finally submit the masternode to the chain
-You do not need to keep a record of that console output. After a few blocks you should see your new masternode appear in the masternode tab of your controller with status "ENABLED"
+If the command was executed successfully the wallet will respond with a strings containing the transaction ID.
+After a few blocks you should see your new masternode appear in the masternode tab of your controller with status "ENABLED"
+When you see that, you do not need to keep the transaction ID anymore, when you don't see it in the masternode tab, the transaction ID may be used for debugging. 
 
 Note: There is no more masternode.conf file or similar with DIP 3 masternodes. Everything is done “on-chain” using the commands above. 
 
-#### Step 9 -	Verification of status
+#### Step 7 -	Verification of status
 You can verify your masternode is running successfully on VPS with the following command (as veco user):
 ```bash
 veco-cli masternode status
