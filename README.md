@@ -23,7 +23,7 @@ If you need any additional help, feel free to join [our discord](https://discord
 
 ### Step 1 – Set up a wallet
 
-This involves downloading and synchronizing the [wallet](https://github.com/vecocoin/veco/releases/download/v1.14.1/veco-1.14.1-win64-setup.exe). Please use [bootstrap](https://github.com/tedydet/veco/releases/tag/bootstrap) to speed up the process.
+This involves downloading and synchronizing the [wallet](https://github.com/vecocoin/veco/releases/download/v1.14.1/veco-1.14.1-win64-setup.exe). Please use a [bootstrap](https://github.com/vecocoin/veco/releases/tag/v1.14.1.bs) to speed up the process.
 
 ### Step 2 – Create collateral
 
